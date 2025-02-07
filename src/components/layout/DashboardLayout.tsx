@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { HiHome, HiCalendar, HiCog, HiUser, HiMenu, HiX, HiLogout } from 'react-icons/hi';
+import { HiHome, HiCalendar, HiCog, HiUser, HiMenu, HiX, HiLogout, HiTicket, HiUsers } from 'react-icons/hi';
 import { useAuth } from '../../contexts/AuthContext';
 import LogoImage from '../../assets/Logo.png';
 
@@ -12,7 +12,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
 
   const navItems = [
     { path: '/dashboard', label: 'Home', icon: HiHome },
@@ -34,31 +34,45 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="flex h-screen overflow-hidden">
-        {/* Sidebar */}
+      {/* Fixed Top Navigation Bar */}
+      <div className="fixed top-0 left-0 right-0 bg-white shadow z-40 ml-64">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-end h-24">
+            {/* Right side - Event Manager Name */}
+            <div className="flex items-center space-x-4">
+              <div className="text-right">
+                <p className="text-sm text-gray-500">Event Manager</p>
+                <p className="text-base font-medium text-gray-900">{user?.email}</p>
+              </div>
+              <img
+                className="h-10 w-10 rounded-full bg-gray-200"
+                src={user?.user_metadata?.avatar_url || `https://ui-avatars.com/api/?name=${user?.email}&background=0D9488&color=fff`}
+                alt={user?.email || 'Profile'}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex">
+        {/* Fixed Sidebar */}
         <div
           className={`${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-lg transform transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}
+          } fixed top-0 left-0 h-screen w-64 bg-white shadow-lg transform transition-transform duration-200 ease-in-out z-50`}
         >
           <div className="h-full flex flex-col">
             {/* Logo */}
-            <div className="h-24 flex items-center justify-between px-4 border-b">
+            <div className="h-24 flex items-center justify-center px-4 border-b">
               <Link to="/dashboard" className="flex items-center">
                 <img
                   src={LogoImage}
                   alt="TicketJar"
                   width={100}
                   height={100}
-                  className="mr-2 hover:opacity-80 transition-opacity object-contain"
+                  className="hover:opacity-80 transition-opacity object-contain"
                 />
               </Link>
-              <button
-                className="lg:hidden"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <HiX className="h-6 w-6" />
-              </button>
             </div>
 
             {/* Navigation Items */}
@@ -93,7 +107,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 flex flex-col overflow-hidden pl-64">
+        <div className="flex-1 ml-64 pt-24">
           {/* Mobile Header */}
           <div className="lg:hidden h-16 bg-white shadow-sm flex items-center justify-between px-4">
             <button
@@ -102,19 +116,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             >
               <HiMenu className="h-6 w-6" />
             </button>
-            {/* Mobile Logout Button */}
-            <button
-              onClick={handleLogout}
-              className="text-red-600 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition-colors duration-150"
-              title="Logout"
-            >
-              <HiLogout className="h-5 w-5" />
-            </button>
           </div>
 
           {/* Content */}
-          <main className="flex-1 overflow-y-auto">
-            <div className="p-6">
+          <main className="flex-1 overflow-y-auto bg-gray-50 min-h-screen">
+            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
               {children}
             </div>
           </main>
@@ -132,4 +138,4 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   );
 };
 
-export default DashboardLayout; 
+export default DashboardLayout;
