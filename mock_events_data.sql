@@ -1,0 +1,117 @@
+-- Insert mock events for organizer ID: 059d2191-8564-4ec5-a8b9-bcb99513e5a4
+INSERT INTO public.events (
+    title,
+    description,
+    category,
+    status,
+    date,
+    time,
+    venue,
+    ticket_price,
+    capacity,
+    organizer_id,
+    organizer_name,
+    organizer_email,
+    organizer_role,
+    created_at,
+    updated_at
+) VALUES 
+(
+    'Summer Music Festival 2024',
+    'Experience an unforgettable evening of live music featuring top artists from around the world. Food and drinks available.',
+    'concert',
+    'Published',
+    '2024-07-15',
+    '18:00',
+    'Central Park Arena',
+    149.99,
+    5000,
+    '059d2191-8564-4ec5-a8b9-bcb99513e5a4',
+    'Event Organizer',
+    'organizer@example.com',
+    'organizer',
+    NOW(),
+    NOW()
+),
+(
+    'Tech Innovation Conference',
+    'Join industry leaders and innovators for a day of cutting-edge technology discussions and networking.',
+    'conference',
+    'Draft',
+    '2024-08-20',
+    '09:00',
+    'Digital Convention Center',
+    299.99,
+    1000,
+    '059d2191-8564-4ec5-a8b9-bcb99513e5a4',
+    'Event Organizer',
+    'organizer@example.com',
+    'organizer',
+    NOW(),
+    NOW()
+),
+(
+    'Modern Art Exhibition',
+    'Discover contemporary masterpieces from emerging artists. Wine and cheese reception included.',
+    'art',
+    'Published',
+    '2024-06-10',
+    '10:00',
+    'Metropolitan Gallery',
+    25.00,
+    200,
+    '059d2191-8564-4ec5-a8b9-bcb99513e5a4',
+    'Event Organizer',
+    'organizer@example.com',
+    'organizer',
+    NOW(),
+    NOW()
+),
+(
+    'Startup Workshop Series',
+    'Learn essential skills for launching and growing your startup from successful entrepreneurs.',
+    'workshop',
+    'Published',
+    '2024-05-25',
+    '14:00',
+    'Innovation Hub',
+    75.00,
+    50,
+    '059d2191-8564-4ec5-a8b9-bcb99513e5a4',
+    'Event Organizer',
+    'organizer@example.com',
+    'organizer',
+    NOW(),
+    NOW()
+),
+(
+    'Digital Marketing Webinar',
+    'Master the latest digital marketing strategies and tools in this interactive online session.',
+    'webinar',
+    'Draft',
+    '2024-09-05',
+    '15:00',
+    'Online',
+    49.99,
+    500,
+    '059d2191-8564-4ec5-a8b9-bcb99513e5a4',
+    'Event Organizer',
+    'organizer@example.com',
+    'organizer',
+    NOW(),
+    NOW()
+);
+
+-- Verify the inserts
+SELECT 
+    id,
+    title,
+    category,
+    status,
+    date,
+    organizer_id,
+    organizer_name,
+    organizer_email
+FROM public.events
+WHERE organizer_id = '059d2191-8564-4ec5-a8b9-bcb99513e5a4'
+ORDER BY date; 

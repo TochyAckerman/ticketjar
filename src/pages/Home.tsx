@@ -1,196 +1,123 @@
-import React from 'react';
-import { Search, MapPin, Calendar } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
-const events = [
-  {
-    type: 'Festival',
-    title: 'California Holiday Festival',
-    price: '$0',
-    image: 'https://images.unsplash.com/photo-1495464101292-552d0fb4b935?auto=format&fit=crop&w=1200&q=80'
-  },
-  {
-    type: 'Concert',
-    title: 'Revival Music Group Concert',
-    price: '$49.99',
-    image: 'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?auto=format&fit=crop&w=1200&q=80'
-  },
-  {
-    type: 'Tech',
-    title: 'Annual Tech Conference 2025',
-    price: '$0',
-    image: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1200&q=80'
-  },
-  {
-    type: 'Beach',
-    title: 'Beach Festival 2025',
-    price: '$10',
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80'
-  }
-];
+const Home = () => {
+  const location = useLocation();
+  const [message, setMessage] = useState<string | null>(null);
 
-function Home() {
+  useEffect(() => {
+    if (location.state?.message) {
+      setMessage(location.state.message);
+      // Clear the message after 5 seconds
+      const timer = setTimeout(() => {
+        setMessage(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [location.state]);
+
   return (
     <div className="bg-white">
-      {/* Hero Section */}
-      <div className="bg-red-600 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <h1 className="text-6xl font-bold mb-10">Create your event with easy</h1>
-          
-          {/* Search Bar */}
-          <div className="bg-white rounded-lg p-3 flex items-center space-x-4">
-            <div className="flex-1 flex items-center space-x-2 px-2">
-              <MapPin className="h-5 w-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="City or zip code"
-                className="w-full focus:outline-none text-gray-900 text-sm"
-              />
-            </div>
-            <div className="w-px h-6 bg-gray-200"></div>
-            <div className="flex-1 flex items-center space-x-2 px-2">
-              <Calendar className="h-5 w-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="All date"
-                className="w-full focus:outline-none text-gray-900 text-sm"
-              />
-            </div>
-            <div className="w-px h-6 bg-gray-200"></div>
-            <div className="flex-1 flex items-center space-x-2 px-2">
-              <Search className="h-5 w-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search by Event, Artist or Venue"
-                className="w-full focus:outline-none text-gray-900 text-sm"
-              />
-            </div>
-            <button className="bg-green-900 text-white px-5 py-2 rounded hover:bg-green-800 text-sm">
-              Search
-            </button>
+      {/* Message Toast */}
+      {message && (
+        <div className="fixed top-4 right-4 z-50">
+          <div className="bg-green-50 text-green-800 rounded-lg p-4 shadow-lg border border-green-200">
+            {message}
+          </div>
+        </div>
+      )}
+
+      {/* Hero section */}
+      <div className="relative">
+        <div className="absolute inset-0">
+          <img
+            className="w-full h-full object-cover"
+            src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+            alt="Concert crowd"
+          />
+          <div className="absolute inset-0 bg-gray-900 bg-opacity-70"></div>
+        </div>
+        <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            Your Gateway to Amazing Events
+          </h1>
+          <p className="mt-6 text-xl text-gray-300 max-w-3xl">
+            Discover and book tickets for the most exciting concerts, insightful webinars, and inspiring art events.
+          </p>
+          <div className="mt-10 flex space-x-4">
+            <Link
+              to="/concerts"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
+            >
+              Browse Concerts
+            </Link>
+            <Link
+              to="/webinars"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-green-600 bg-white hover:bg-gray-50"
+            >
+              Explore Webinars
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* Event Sections */}
-      {['Upcoming events', 'Free events', 'Past events'].map((section, sectionIndex) => (
-        <div key={sectionIndex} className="max-w-7xl mx-auto px-4 py-10">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-semibold text-gray-900">{section}</h2>
-            <button className="text-2xl text-gray-400 hover:text-gray-600">
-              ›
-            </button>
-          </div>
-          
-          <div className="grid grid-cols-4 gap-6">
-            {events.map((event, index) => (
-              <div key={index} className="group cursor-pointer">
-                <div className="relative aspect-[4/3] rounded-lg overflow-hidden mb-3">
-                  <img
-                    src={event.image}
-                    alt={event.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="text-sm text-gray-500 mb-1">{event.type}</div>
-                <h3 className="text-base font-medium text-gray-900 mb-1">{event.title}</h3>
-                <div className="text-gray-900">{event.price}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
+      {/* Category section */}
+      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-12">
+          What are you interested in?
+        </h2>
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <Link
+            to="/concerts"
+            className="relative rounded-lg overflow-hidden hover:opacity-90 transition-opacity"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+              alt="Concerts"
+              className="w-full h-64 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+            <div className="absolute bottom-0 left-0 p-6">
+              <h3 className="text-2xl font-bold text-white">Concerts</h3>
+              <p className="text-gray-200">Live music experiences</p>
+            </div>
+          </Link>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white pt-16 pb-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-4 gap-8">
-            <div>
-              <h3 className="font-semibold mb-4">TicketJar</h3>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li className="hover:text-white cursor-pointer">Create Events</li>
-                <li className="hover:text-white cursor-pointer">Pricing</li>
-                <li className="hover:text-white cursor-pointer">Event Marketing Platform</li>
-                <li className="hover:text-white cursor-pointer">Mobile App</li>
-                <li className="hover:text-white cursor-pointer">Community Guidelines</li>
-                <li className="hover:text-white cursor-pointer">FAQs</li>
-                <li className="hover:text-white cursor-pointer">Sitemap</li>
-              </ul>
+          <Link
+            to="/webinars"
+            className="relative rounded-lg overflow-hidden hover:opacity-90 transition-opacity"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1591115765373-5207764f72e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+              alt="Webinars"
+              className="w-full h-64 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+            <div className="absolute bottom-0 left-0 p-6">
+              <h3 className="text-2xl font-bold text-white">Webinars</h3>
+              <p className="text-gray-200">Online learning and networking</p>
             </div>
-            <div>
-              <h3 className="font-semibold mb-4">Plan Events</h3>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li className="hover:text-white cursor-pointer">Sell Tickets Online</li>
-                <li className="hover:text-white cursor-pointer">Event Planning</li>
-                <li className="hover:text-white cursor-pointer">Event Planning System</li>
-                <li className="hover:text-white cursor-pointer">Event Management Software</li>
-                <li className="hover:text-white cursor-pointer">Virtual Events Platform</li>
-                <li className="hover:text-white cursor-pointer">Event Check-In</li>
-                <li className="hover:text-white cursor-pointer">Post your event online</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Find Events</h3>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li className="hover:text-white cursor-pointer">New Orleans Food & Drink Events</li>
-                <li className="hover:text-white cursor-pointer">San Francisco Holiday Events</li>
-                <li className="hover:text-white cursor-pointer">Miami Music Events</li>
-                <li className="hover:text-white cursor-pointer">Denver Hobby Events</li>
-                <li className="hover:text-white cursor-pointer">Atlanta Pop Music Events</li>
-                <li className="hover:text-white cursor-pointer">New York Events</li>
-                <li className="hover:text-white cursor-pointer">Chicago Events</li>
-                <li className="hover:text-white cursor-pointer">Events in Dallas Today</li>
-                <li className="hover:text-white cursor-pointer">Los Angeles Events</li>
-                <li className="hover:text-white cursor-pointer">Washington Events</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Connect With Us</h3>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li className="hover:text-white cursor-pointer">Contact Support</li>
-                <li className="hover:text-white cursor-pointer">Contact Sales</li>
-                <li className="hover:text-white cursor-pointer">X</li>
-                <li className="hover:text-white cursor-pointer">Facebook</li>
-                <li className="hover:text-white cursor-pointer">LinkedIn</li>
-                <li className="hover:text-white cursor-pointer">Instagram</li>
-                <li className="hover:text-white cursor-pointer">TikTok</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer>
+          </Link>
 
-      {/* Copyright */}
-      <div className="bg-gray-900 text-gray-400 border-t border-gray-800 py-4">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center text-xs space-x-2">
-            <span>© 2025 TicketJar</span>
-            <span>•</span>
-            <a href="#" className="hover:text-white">About</a>
-            <span>•</span>
-            <a href="#" className="hover:text-white">Blog</a>
-            <span>•</span>
-            <a href="#" className="hover:text-white">Help</a>
-            <span>•</span>
-            <a href="#" className="hover:text-white">Careers</a>
-            <span>•</span>
-            <a href="#" className="hover:text-white">Press</a>
-            <span>•</span>
-            <a href="#" className="hover:text-white">Security</a>
-            <span>•</span>
-            <a href="#" className="hover:text-white">Developers</a>
-            <span>•</span>
-            <a href="#" className="hover:text-white">Terms</a>
-            <span>•</span>
-            <a href="#" className="hover:text-white">Privacy</a>
-            <span>•</span>
-            <a href="#" className="hover:text-white">Accessibility</a>
-            <span>•</span>
-            <a href="#" className="hover:text-white">Cookies</a>
-          </div>
+          <Link
+            to="/art"
+            className="relative rounded-lg overflow-hidden hover:opacity-90 transition-opacity"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1594794312433-05a69a98b7a0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+              alt="Art Events"
+              className="w-full h-64 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+            <div className="absolute bottom-0 left-0 p-6">
+              <h3 className="text-2xl font-bold text-white">Art Events</h3>
+              <p className="text-gray-200">Exhibitions and workshops</p>
+            </div>
+          </Link>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Home;
