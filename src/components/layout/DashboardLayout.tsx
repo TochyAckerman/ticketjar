@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { HiHome, HiCalendar, HiCog, HiUser, HiMenu, HiX, HiLogout } from 'react-icons/hi';
 import { useAuth } from '../../contexts/AuthContext';
+import LogoImage from '../../assets/Logo.png';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -34,17 +35,23 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="flex h-screen overflow-hidden">
-        {/* Fixed Sidebar */}
+        {/* Sidebar */}
         <div
           className={`${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-lg transform transition-transform duration-200 ease-in-out lg:translate-x-0`}
+          } fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-lg transform transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}
         >
           <div className="h-full flex flex-col">
-            {/* Logo Section */}
-            <div className="h-16 flex items-center justify-between px-4 border-b">
-              <Link to="/dashboard" className="text-xl font-bold text-green-600">
-                TicketJar
+            {/* Logo */}
+            <div className="h-24 flex items-center justify-between px-4 border-b">
+              <Link to="/dashboard" className="flex items-center">
+                <img
+                  src={LogoImage}
+                  alt="TicketJar"
+                  width={100}
+                  height={100}
+                  className="mr-2 hover:opacity-80 transition-opacity object-contain"
+                />
               </Link>
               <button
                 className="lg:hidden"
